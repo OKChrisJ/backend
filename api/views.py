@@ -7,4 +7,4 @@ from api.models import *
 from api.serializers import *
 
 def api_home(request, *args, **kwargs):
-    return JsonResponse({"massage": "Hi there, this is your Django api response!"})
+    return JsonResponse({"message": "Hi there, this is your Django api response!"})

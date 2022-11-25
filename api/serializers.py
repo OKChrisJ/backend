@@ -39,7 +39,7 @@ class Address_Serializer(serializers.ModelSerializer):
 
 class ClientContact_Serializer(serializers.ModelSerializer):
     class Meta:
-        model = client_contact
+        model = client_contacts
         fields = (
             'abc_client_id', 'client_contacts_id', 'contact_id',
             'created_by', 'created_date', 'is_deleted', 'modified_by',
@@ -48,7 +48,7 @@ class ClientContact_Serializer(serializers.ModelSerializer):
 
 class Contact_Serializer(serializers.ModelSerializer):
     class Meta:
-        model - contact
+        model = contact
         fields = (
             'contact_id', 'created_by', 'created_date', 'email_address',
             'first_name', 'middle_name', 'last_name', 'is_deleted',
