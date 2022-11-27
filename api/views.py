@@ -8,25 +8,29 @@ from api.serializers import *
 
 @csrf_exempt
 def api_client(request, id=0):
+    #using "GET" request
     if request.method == 'GET':
         client = abc_client.objects.all()
         client_serializer = Client_Serializer(client, many=True)
         return JsonResponse(client_serializer.data, safe=False)
+    #using "POST" request
     elif request.method == 'POST':
         client_data = JSONParser().parse(request)
         client_serializer = Client_Serializer(data=client_data)
         if client_serializer.is_valid():
             client_serializer.save()
-            return JsonReponse('Added Successfully', safe=False)
-        return JSonReponse('Failed to add', safe=False)
+            return JsonResponse('Added Successfully', safe=False)
+        return JsonResponse('Failed to add', safe=False)
+    #using "PUT" request
     elif request.method == 'PUT':
         client_data = JSONParser().parse(request)
         client = abc_client.objects.get(abc_client_id = client_data['abc_client_id'])
         client_serializer = Client_Serializer(client, data=client_data)
         if client_serializer.is_valid():
             client_serializer.save()
-            return JsonReponse('Added Successfully', safe=False)
-        return JSonReponse('Failed to update')
+            return JsonResponse('Added Successfully', safe=False)
+        return JsonResponse('Failed to update')
+    #using "DELETE" request
     elif request.method == 'DELETE':
         client = abc_client.objects.get(abc_client_id = id)
         client.delete()
