@@ -1,9 +1,9 @@
 from django.db import models
 
 class abc_client(models.Model):
-    abc_client_id = models.IntegerField()
+    abc_client_id = models.AutoField(primary_key=True)
     client_name = models.CharField(max_length=100)
-    company_address_id = models.IntegerField()
+    company_address = models.ForeignKey('Address', models.DO_NOTHING, blank=True, null=True)
     created_by = models.CharField(max_length=45)
     created_date = models.DateField()
     is_deleted = models.BooleanField()

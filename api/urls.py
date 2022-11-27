@@ -2,5 +2,5 @@ from django.urls import path
 from api import views
 
 urlpatterns = [
-    path('views/', views.api_home)
+    path('views/', views.api_client)
 ]
