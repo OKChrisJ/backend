@@ -1,37 +1,5 @@
 from django.db import models
 
-class abc_client(models.Model):
-    abc_client_id = models.AutoField(primary_key=True)
-    company_address_id = models.ForeignKey(address.address_id, on_delete=models.CASCADE)
-    client_name = models.CharField(max_length=100)
-    phone_number = models.CharField(max_length=45)
-    created_by = models.CharField(max_length=45)
-    created_date = models.DateField(primary_key=True)
-    is_deleted = models.BooleanField()
-    modified_by = models.CharField(max_length=45)
-    modified_date = models.DateField()
-
-class abc_resource(models.Model):
-    abc_resource_id = models.AutoField(primary_key=True)
-    inventory_id = models.ForeignKey(inventory.inventory_id, on_delete=models.CASCADE)
-    resource_type_id = models.ForeignKey(resource_type.resource_type_id, on_delete=models.CASCADE)
-    resource_name = models.CharField(max_length=45)
-    current_number_of_resources = models.IntegerField()
-    max_number_of_resources = models.IntegerField()
-    created_by = models.CharField(max_length=45)
-    created_date = models.DateField()
-    is_deleted = models.BooleanField()
-    modified_by = models.CharField(max_length=45)
-    modified_date = models.DateField()
-
-class access_log(models.Model):
-    access_log_id = models.AutoField(primary_key=True)
-    action = models.CharField(max_length=45)
-    field_name = models.CharField(max_length=45)
-    screen_name = models.CharField(max_length=45)
-    table_name = models.CharField(max_length=45)
-    username = models.CharField(max_length=45)
-
 class address(models.Model):
     address_id = models.AutoField(primary_key=True)
     address_line_1 = models.CharField(max_length=100)
@@ -46,15 +14,32 @@ class address(models.Model):
     modified_by = models.CharField(max_length=45)
     modified_date = models.DateField()
 
-class client_contacts(models.Model):
-    client_contacts_id = models.AutoField(primary_key=True)
-    abc_client_id = models.ForeignKey(abc_client.abc_client_id, on_delete=models.CASCADE)
-    contact_id = models.ForeignKey(contact.contact_id, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.address_id
+
+class storage_type(models.Model):
+    storage_type_id = models.AutoField(primary_key=True)
+    type_name = models.CharField(max_length=45)
     created_by = models.CharField(max_length=45)
     created_date = models.DateField()
     is_deleted = models.BooleanField()
     modified_by = models.CharField(max_length=45)
     modified_date = models.DateField()
+
+    def __str__(self):
+        return self.storage_type_id
+
+class resource_type(models.Model):
+    resource_type_id = models.AutoField(primary_key=True)
+    type_name = models.CharField(max_length=45)
+    created_by = models.CharField(max_length=45)
+    created_date = models.DateField()
+    is_deleted = models.BooleanField()
+    modified_by = models.CharField(max_length=45)
+    modified_date = models.DateField()
+
+    def __str__(self):
+        return self.resource_type_id
 
 class contact(models.Model):
     contact_id = models.AutoField(primary_key=True)
@@ -69,12 +54,29 @@ class contact(models.Model):
     modified_by = models.CharField(max_length=45)
     modified_date = models.DateField()
 
+    def __str__(self):
+        return self.contact_id
+
+class abc_client(models.Model):
+    abc_client_id = models.AutoField(primary_key=True)
+    company_address_id = models.ForeignKey(address, on_delete=models.CASCADE)
+    client_name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=45)
+    created_by = models.CharField(max_length=45)
+    created_date = models.DateField()
+    is_deleted = models.BooleanField()
+    modified_by = models.CharField(max_length=45)
+    modified_date = models.DateField()
+
+    def __str__(self):
+        return self.abc_client_id
+
 class inventory(models.Model):
     inventory_id = models.AutoField(primary_key=True)
     inventory_name = models.CharField(max_length=45)
-    abc_client_id = models.ForeignKey(abc_client.abc_client_id, on_delete=models.CASCADE)
-    address_id = models.IntegerField()
-    storage_type_id = models.ForeignKey(storage_type.storage_type_id, on_delete=models.CASCADE)
+    abc_client_id = models.ForeignKey(abc_client, on_delete=models.CASCADE)
+    address_id = models.ForeignKey(address, on_delete=models.CASCADE)
+    storage_type_id = models.ForeignKey(storage_type, on_delete=models.CASCADE)
     max_item_capacity = models.IntegerField()
     created_by = models.CharField(max_length=45)
     created_date = models.DateField()
@@ -82,21 +84,45 @@ class inventory(models.Model):
     modified_by = models.CharField(max_length=45)
     modified_date = models.DateField()
 
-class resource_type(models.Model):
-    resource_type_id = models.AutoField(primary_key=True)
-    type_name = models.CharField(max_length=45)
+    def __str__(self):
+        return self.inventory_id
+
+class abc_resource(models.Model):
+    abc_resource_id = models.AutoField(primary_key=True)
+    inventory_id = models.ForeignKey(inventory, on_delete=models.CASCADE)
+    resource_type_id = models.ForeignKey(resource_type, on_delete=models.CASCADE)
+    resource_name = models.CharField(max_length=45)
+    current_number_of_resources = models.IntegerField()
+    max_number_of_resources = models.IntegerField()
     created_by = models.CharField(max_length=45)
     created_date = models.DateField()
     is_deleted = models.BooleanField()
     modified_by = models.CharField(max_length=45)
     modified_date = models.DateField()
 
-class storage_type(models.Model):
-    storage_type_id = models.AutoField(primary_key=True)
-    type_name = models.CharField(max_length=45)
+    def __str__(self):
+        return self.abc_resource_id
+
+class client_contacts(models.Model):
+    client_contacts_id = models.AutoField(primary_key=True)
+    abc_client_id = models.ForeignKey(abc_client, on_delete=models.CASCADE)
+    contact_id = models.ForeignKey(contact, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=45)
     created_date = models.DateField()
     is_deleted = models.BooleanField()
     modified_by = models.CharField(max_length=45)
     modified_date = models.DateField()
 
+    def __str__(self):
+        return self.client_contacts_id
+
+class access_log(models.Model):
+    access_log_id = models.AutoField(primary_key=True)
+    action = models.CharField(max_length=45)
+    field_name = models.CharField(max_length=45)
+    screen_name = models.CharField(max_length=45)
+    table_name = models.CharField(max_length=45)
+    username = models.CharField(max_length=45)
+
+    def __str__(self):
+        return self.access_log_id

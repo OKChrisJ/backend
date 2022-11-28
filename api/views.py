@@ -1,3 +1,4 @@
+import json
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -9,10 +10,18 @@ from api.serializers import *
 @csrf_exempt
 def api_client(request, id=0):
     #using "GET" request
+
+
     if request.method == 'GET':
-        client = abc_client.objects.all()
-        client_serializer = Client_Serializer(client, many=True)
-        return JsonResponse(client_serializer.data, safe=False)
+        body = request.body
+        data = {}
+        try:
+            data = json.loads(body)
+        except:
+            pass
+        return JsonResponse(data)
+
+
     #using "POST" request
     elif request.method == 'POST':
         client_data = JSONParser().parse(request)
