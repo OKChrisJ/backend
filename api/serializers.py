@@ -8,7 +8,7 @@ class Client_Serializer(serializers.ModelSerializer):
             'abc_client_id', 'client_name', 'company_address_id',
             'created_by', 'created_date', 'is_deleted', 'modified_by',
             'modified_date', 'phone_number'
-            )
+        )
 
 class Resource_Serializer(serializers.ModelSerializer):
     class Meta:
